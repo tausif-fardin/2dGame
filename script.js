@@ -52,14 +52,10 @@ window.addEventListener('load', function () {
       this.width = 120;
       this.height = 190;
       this.x = 20;
-      this.frameX = 0;
-      this.frameY = 0;
-      this.maxFrame = 37;
       this.y = 100;
       this.speedY = 0;
       this.maxSpeed = 1;
       this.projectiles = [];
-      this.image = document.getElementById('player');
     }
     update() {
       if (this.game.keys.includes('ArrowUp')) this.speedY = -this.maxSpeed;
@@ -74,26 +70,10 @@ window.addEventListener('load', function () {
       this.projectiles = this.projectiles.filter(
         (projectile) => !projectile.markedForDeletion
       );
-      //sprite animation
-      if (this.frameX < this.maxFrame) {
-        this.frameX++;
-      } else {
-        this.frameX = 0;
-      }
     }
     draw(context) {
       context.fillStyle = 'black';
       context.fillRect(this.x, this.y, this.width, this.height);
-      context.drawImage =
-        (this.image,
-        this.frameX * this.width,
-        this.frameX * this.height,
-        this.width,
-        this.height,
-        this.x,
-        this.y,
-        this.width,
-        this.height);
       this.projectiles.forEach((projectile) => {
         projectile.draw(context);
       });
