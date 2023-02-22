@@ -77,7 +77,12 @@ window.addEventListener('load', function () {
         this.speedY = 0;
       }
       this.y += this.speedY;
-
+      //vertical boundaries
+      if (this.y > this.game.height - this.height * 0.5) {
+        this.y = this.game.height - this.height * 0.5;
+      } else if (this.y < -this.height * 0.5) {
+        this.y = -this.height * 0.5;
+      }
       //handle projectiles
       this.projectiles.forEach((projectile) => {
         projectile.update();
@@ -181,8 +186,10 @@ window.addEventListener('load', function () {
         this.width,
         this.height
       );
-      context.font = '20px Helvetica';
-      context.fillText(this.lives, this.x, this.y);
+      if (this.game.debug) {
+        context.font = '20px Helvetica';
+        context.fillText(this.lives, this.x, this.y);
+      }
     }
   }
 
@@ -312,9 +319,11 @@ window.addEventListener('load', function () {
         );
       }
       //ammo
-      if (this.game.powerUp) context.fillStyle = '#ffffbd';
+      if (this.game.powerUp) {
+        context.fillStyle = '#ffffbd';
+      }
       for (let i = 0; i < this.game.ammo; i++) {
-        context.fillRect(20 + 10 * i, 50, 3, 20);
+        context.fillRect(20 + 5 * i, 50, 3, 20);
       }
       context.restore();
     }
@@ -373,7 +382,6 @@ window.addEventListener('load', function () {
         this.player.projectiles.forEach((projectile) => {
           if (this.checkCollision(projectile, enemy)) {
             enemy.lives--;
-            projectile.markedForDeletion = true;
             if (enemy.lives <= 0) {
               enemy.markedForDeletion = true;
               if (!this.gameOver) {
